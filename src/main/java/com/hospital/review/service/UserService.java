@@ -22,9 +22,9 @@ public class UserService {
 
         //비즈니스 로직 - 회원가입
         //아이디가 중복이면 회원가입 x --> 예외 발생
-        Optional<User> userbyUserName = userRepository.findByUserName(userJoinRequest.getUserName());
-        log.info("db에 있는 user 정보 : " + userbyUserName.get().toString());
-        if(userbyUserName.isPresent()) throw new RuntimeException("userName이 존재합니다");
+        userRepository.findByUserName(userJoinRequest.getUserName()).ifPresent(
+                user -> {throw new RuntimeException("userName이 존재합니다");}
+        );
         //중복이 아닐경우 회원가입
         User save = userRepository.save(userJoinRequest.toEntity());
 
