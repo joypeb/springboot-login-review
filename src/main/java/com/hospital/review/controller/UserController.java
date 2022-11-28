@@ -24,6 +24,8 @@ public class UserController {
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest userJoinRequest) throws Throwable {
         UserDto userDto = userService.join(userJoinRequest);
 
-        return Response.success(UserJoinResponse.builder().userName(userDto.getUserName()).email(userDto.getEmail()).build());
+        return Response.success(
+                UserJoinResponse.builder().userName(userDto.getUserName()).email(userDto.getEmail()).build()
+        );
     }
 }
