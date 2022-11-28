@@ -17,13 +17,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserDto join(UserJoinRequest userJoinRequest) throws Throwable {
+    public UserDto join(UserJoinRequest userJoinRequest) {
         log.info("user 정보 : " + userJoinRequest.getUserName() + ", " + userJoinRequest.getEmail() + ", " + userJoinRequest.getPassword());
 
         //비즈니스 로직 - 회원가입
         //아이디가 중복이면 회원가입 x --> 예외 발생
-        userRepository.findByUserName(userJoinRequest.getUserName())
-                .ifPresent(user -> new RuntimeException("해당 userName 중복"));
+        Optional<User> userbyUserName = userRepository.findByUserName(userJoinRequest.getUserName());
+        log.info("db에 있는 user 정보 : " + userbyUserName.get().toString());
+        if(userbyUserName.isPresent()) throw new RuntimeException("userName이 존재합니다");
         //중복이 아닐경우 회원가입
         User save = userRepository.save(userJoinRequest.toEntity());
 
