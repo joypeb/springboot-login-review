@@ -4,7 +4,7 @@ import com.hospital.review.domain.User;
 import com.hospital.review.domain.dto.UserDto;
 import com.hospital.review.domain.dto.UserJoinRequest;
 import com.hospital.review.exception.ErrorCode;
-import com.hospital.review.exception.HospitalReviewException;
+import com.hospital.review.exception.HospitalReviewAppException;
 import com.hospital.review.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class UserService {
         //비즈니스 로직 - 회원가입
         //아이디가 중복이면 회원가입 x --> 예외 발생
         userRepository.findByUserName(userJoinRequest.getUserName()).ifPresent(
-                user -> {throw new HospitalReviewException(
+                user -> {throw new HospitalReviewAppException(
                         ErrorCode.DUPLICATED_USER_NAME, String.format("Username %s이 중복됩니다",userJoinRequest.getUserName())
                     );
                 }
