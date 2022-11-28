@@ -3,6 +3,6 @@
 ## 링크
 - 회원가입
 ```
-http://localhost:8080/api/v1/users/join
+/api/v1/users/join
 ```
 
