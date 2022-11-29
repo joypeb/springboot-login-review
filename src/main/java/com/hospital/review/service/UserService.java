@@ -6,8 +6,10 @@ import com.hospital.review.domain.dto.UserJoinRequest;
 import com.hospital.review.exception.ErrorCode;
 import com.hospital.review.exception.HospitalReviewAppException;
 import com.hospital.review.repository.UserRepository;
+import com.hospital.review.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
+
+    @Value("${jwt.token.secret}")
+    private String secretkey;
+    private long expireTimeMs = 1000 * 60 * 60; //1시간
 
     public UserDto join(UserJoinRequest userJoinRequest) {
         log.info("user 정보 : " + userJoinRequest.getUserName() + ", " + userJoinRequest.getEmail() + ", " + userJoinRequest.getPassword());
@@ -59,8 +65,6 @@ public class UserService {
         }
 
         //두가지 확인중 예외가 없을경우 token발행
-
-
-        return null;
+        return JwtTokenUtil.createToken(userName, secretkey, expireTimeMs);
     }
 }
