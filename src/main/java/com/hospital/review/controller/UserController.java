@@ -1,9 +1,7 @@
 package com.hospital.review.controller;
 
 import com.hospital.review.domain.Response;
-import com.hospital.review.domain.dto.UserDto;
-import com.hospital.review.domain.dto.UserJoinRequest;
-import com.hospital.review.domain.dto.UserJoinResponse;
+import com.hospital.review.domain.dto.*;
 import com.hospital.review.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,5 +25,11 @@ public class UserController {
         return Response.success(
                 UserJoinResponse.builder().userName(userDto.getUserName()).email(userDto.getEmail()).build()
         );
+    }
+
+    @PostMapping("/login")
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
+        String token = userService.login(userLoginRequest.getUserName(),userLoginRequest.getPassword());
+        return Response.success(new UserLoginResponse(token));
     }
 }
